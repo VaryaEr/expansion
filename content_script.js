@@ -1,5 +1,4 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){     
-        console.log(window.location.href)
         if(window.location.href.indexOf('https://www.biozol.de') != -1){
             keys = keys = ['Biozol Catalog Number:', 'Article Name:', 'Manufacturer:'];
     result = [];
