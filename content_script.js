@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){     
         console.log(window.location.href)
         if(window.location.href.indexOf('https://www.biozol.de') != -1){
-            keys = ['Biozol Catalog Number:', 'Article Name:',];
+            keys = keys = ['Biozol Catalog Number:', 'Article Name:', 'Manufacturer:'];
     result = [];
     str = '';
     formatConvert = function (items) {
@@ -10,12 +10,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         for (let i = 0; i < array.length; i++) {
             line = '';
             for (let index in array[i]) {
-                if (line != '') line += ';'
-
                 line += array[i][index];
             }
-            key = keys[i] ?? 'url: ';
-            str += key + line + '\r\n';
+            if((i + 1) % 4 != 0 ){
+                str += line + ';';
+            } else if((i + 1) % 4 == 0 ){
+                str += line + '\r\n';
+            }
         }
 
         return str;
@@ -35,7 +36,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         }
         data.push({ [insertKey]: val });
     });
-    data.push({ 'url': window.location.href });
+    Array.prototype.insert = function ( index, item ) {
+        this.splice( index, 0, item );
+    };
+            data.insert(data.length - 1,{ 'url': window.location.href });
+
+    
+    
     localStorage.setItem('data', JSON.stringify(data));
 
     a = document.createElement('a');
